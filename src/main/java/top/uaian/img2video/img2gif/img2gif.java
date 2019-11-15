@@ -7,8 +7,11 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.Arrays;
+import java.util.Comparator;
 
 public class img2gif {
+
     public static void main(String[] args){
         String imgPath = "F:\\project-file\\img2video\\img\\";
         String gifPath = "F:\\project-file\\img2video\\gif\\test2.gif";
@@ -18,6 +21,8 @@ public class img2gif {
     public static void toGif(String imgPath,String gifPath){
         int fileSum = new File(imgPath).list().length;
         File[] files = new File(imgPath).listFiles();
+        Arrays.sort(files,
+                (o1, o2) -> Integer.valueOf(o1.getName().replace(".jpg","")) - Integer.valueOf(o2.getName().replace(".jpg","")));
         System.out.println("共有 " + fileSum + " 个文件转换成gif");
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         BufferedImage[] bufferedImage = new BufferedImage[fileSum];
@@ -29,7 +34,7 @@ public class img2gif {
             animatedGifEncoder.start(byteArrayOutputStream);
             for (int i = 0; i < fileSum; i++) {
                 //延迟
-                animatedGifEncoder.setDelay(500);
+                animatedGifEncoder.setDelay(100);
                 bufferedImage[i] = ImageIO.read(files[i]);
                 animatedGifEncoder.addFrame(bufferedImage[i]);
             }

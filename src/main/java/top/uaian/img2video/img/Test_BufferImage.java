@@ -1,10 +1,12 @@
 package top.uaian.img2video.img;
 
 import org.omg.PortableInterceptor.INACTIVE;
+import top.uaian.img2video.img2gif.img2gif;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.awt.image.ImageObserver;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -18,6 +20,9 @@ import java.io.IOException;
  * version: 1.0 <br>
  */
 public class Test_BufferImage {
+
+    private static Font font = new Font("微软雅黑", Font.BOLD, 48);
+
     public static void main(String[] args) throws IOException {
         String source_img_path = "F:\\project-file\\img2video\\img\\001.jpg";
         BufferedImage bufferedImage = ImageIO.read(new FileInputStream(source_img_path));
@@ -26,7 +31,58 @@ public class Test_BufferImage {
         //读取一个图片的RGB的值
 //        getRGB(bufferedImage);
         //将图片改成全黑输出
-        setBlackPic(bufferedImage);
+//        setBlackPic(bufferedImage);
+        //图片上写字
+//        drawContentToPic(bufferedImage);
+        //生成新图片
+//        createNewPic(bufferedImage);
+        //批量生成新图片
+//        createNewPics(bufferedImage);
+        //转化为GIF
+        img2gif.toGif("F:\\project-file\\img2video\\img\\pics\\","F:\\project-file\\img2video\\img\\pics\\mygif.gif");
+    }
+
+    private static void createNewPics(BufferedImage bufferedImage) throws IOException {
+        String source_img_path_other = "F:\\project-file\\img2video\\img\\002.jpg";
+        BufferedImage bufferedImage_other = ImageIO.read(new File(source_img_path_other));
+        int width = bufferedImage.getWidth();
+        int height = bufferedImage.getHeight();
+        BufferedImage newBufferedImage=new BufferedImage(width,height,BufferedImage.TYPE_INT_RGB);
+        Graphics graphics=newBufferedImage.getGraphics();
+        //将原始位图缩小后绘制到bufferedImage对象中
+        for (int i = 0;i <width; i+=4) {
+            graphics.drawImage(bufferedImage_other,0,0,width,height,null);
+            graphics.drawImage(bufferedImage,i,0,width,height,null);
+            //将bufferedImage对象输出到磁盘上
+            ImageIO.write(newBufferedImage,"jpg",new File("F:\\project-file\\img2video\\img\\pics\\" + i +
+                    ".jpg"));
+        }
+
+    }
+
+    private static void createNewPic(BufferedImage bufferedImage) throws IOException {
+        String source_img_path_other = "F:\\project-file\\img2video\\img\\002.jpg";
+        BufferedImage bufferedImage_other = ImageIO.read(new File(source_img_path_other));
+        int width = bufferedImage.getWidth();
+        int height = bufferedImage.getHeight();
+        BufferedImage newBufferedImage=new BufferedImage(width,height,BufferedImage.TYPE_INT_RGB);
+        Graphics graphics=newBufferedImage.getGraphics();
+        //将原始位图缩小后绘制到bufferedImage对象中
+        graphics.drawImage(bufferedImage_other,0,0,width,height,null);
+        graphics.drawImage(bufferedImage,width / 2,0,width,height,null);
+        //将bufferedImage对象输出到磁盘上
+        ImageIO.write(newBufferedImage,"jpg",new File("F:\\project-file\\img2video\\img\\createPic.jpg"));
+
+    }
+
+    private static void drawContentToPic(BufferedImage bufferedImage) throws IOException {
+        String content = "降价出售！";
+        Graphics graphics = bufferedImage.getGraphics();
+        graphics.setColor(Color.BLACK);
+        graphics.setFont(font);
+        graphics.drawString(content, bufferedImage.getWidth() / 2, bufferedImage.getHeight() / 2);
+        graphics.dispose();
+        ImageIO.write(bufferedImage,"jpg",new File("F:\\project-file\\img2video\\img\\addContent.jpg"));
     }
 
     private static void setBlackPic(BufferedImage bufferedImage) throws IOException {
@@ -81,6 +137,8 @@ public class Test_BufferImage {
         //将bufferedImage对象输出到磁盘上
         ImageIO.write(newBufferedImage,"jpg",new File("F:\\project-file\\img2video\\img\\newSize.jpg"));
     }
+
+
 
 
 
