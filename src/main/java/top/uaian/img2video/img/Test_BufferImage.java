@@ -1,12 +1,10 @@
 package top.uaian.img2video.img;
 
-import org.omg.PortableInterceptor.INACTIVE;
-import top.uaian.img2video.img2gif.img2gif;
+import top.uaian.img2video.img2gif.Img2Gif;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.awt.image.ImageObserver;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -39,7 +37,20 @@ public class Test_BufferImage {
         //批量生成新图片
 //        createNewPics(bufferedImage);
         //转化为GIF
-        img2gif.toGif("F:\\project-file\\img2video\\img\\pics\\","F:\\project-file\\img2video\\img\\pics\\mygif.gif");
+//        Img2Gif.toGif("F:\\project-file\\img2video\\img\\pics\\","F:\\project-file\\img2video\\img\\pics\\mygif.gif");
+        //合成两张图片
+        mergeTwoPics(bufferedImage);
+    }
+
+    private static void mergeTwoPics(BufferedImage bufferedImage) throws IOException {
+        String two_path = "F:\\project-file\\img2video\\img\\GaussianBlur.jpg";
+        BufferedImage two_bufferedImage = ImageIO.read(new FileInputStream(two_path));
+        Graphics graphics = two_bufferedImage.getGraphics();
+        int height = bufferedImage.getHeight();
+        int draw_height = (height - 144) / 2;
+        graphics.drawImage(bufferedImage,64,draw_height,364,200,null);
+        ImageIO.write(two_bufferedImage,"jpg",new File("F:\\project-file\\img2video\\img\\merge.jpg"));
+
     }
 
     private static void createNewPics(BufferedImage bufferedImage) throws IOException {

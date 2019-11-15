@@ -51,6 +51,18 @@
             <artifactId>animated-gif-lib</artifactId>
             <version>1.4</version>
         </dependency>
+        <!--javaCV-->
+        <dependency>
+            <groupId>org.bytedeco</groupId>
+            <artifactId>javacv</artifactId>
+            <version>1.4.3</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.bytedeco.javacpp-presets</groupId>
+            <artifactId>ffmpeg-platform</artifactId>
+            <version>4.0.2-1.4.3</version>
+        </dependency>
     </dependencies>
 
     <build>

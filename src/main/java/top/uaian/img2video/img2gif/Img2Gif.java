@@ -8,14 +8,13 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.Arrays;
-import java.util.Comparator;
 
-public class img2gif {
+public class Img2Gif {
 
     public static void main(String[] args){
         String imgPath = "F:\\project-file\\img2video\\img\\";
         String gifPath = "F:\\project-file\\img2video\\gif\\test2.gif";
-        img2gif.toGif(imgPath,gifPath);
+        Img2Gif.toGif(imgPath,gifPath);
     }
 
     public static void toGif(String imgPath,String gifPath){
