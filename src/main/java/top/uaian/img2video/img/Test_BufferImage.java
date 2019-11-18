@@ -1,6 +1,7 @@
 package top.uaian.img2video.img;
 
 import top.uaian.img2video.img2gif.Img2Gif;
+import top.uaian.img2video.model.PicPx;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -9,6 +10,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 /**
  * description:  <br>
@@ -39,7 +43,79 @@ public class Test_BufferImage {
         //转化为GIF
 //        Img2Gif.toGif("F:\\project-file\\img2video\\img\\pics\\","F:\\project-file\\img2video\\img\\pics\\mygif.gif");
         //合成两张图片
-        mergeTwoPics(bufferedImage);
+//        mergeTwoPics(bufferedImage);
+        //渲染像素点（从左到右）
+//        createChangedPic(bufferedImage);
+        //渲染像素点（随机）
+        createChangedPic2(bufferedImage);
+    }
+
+    private static void createChangedPic2(BufferedImage bufferedImage) throws IOException {
+        int width = bufferedImage.getWidth();
+        int height = bufferedImage.getHeight();
+        int minx = bufferedImage.getMinX();
+        int miny = bufferedImage.getMinY();
+        String source_img_path2 = "F:\\project-file\\img2video\\img\\002.jpg";
+        BufferedImage newBufferedImage = ImageIO.read(new FileInputStream(source_img_path2));
+        List<PicPx> picPxes = new ArrayList<>();
+        for (int i = minx; i < width; i++) {
+            for (int j = miny; j < height; j++) {
+                int pixel = bufferedImage.getRGB(i, j);
+                PicPx picPx = new PicPx();
+                picPx.setX(i);
+                picPx.setY(j);
+                picPx.setRgb(pixel);
+                picPxes.add(picPx);
+            }
+        }
+        int size = picPxes.size();
+        Random random = new Random();
+        int count = 0;
+        while (true) {
+            int next = random.nextInt(size);
+            if(( count % 10000 == 0) || count == 0  ) {
+                ImageIO.write(newBufferedImage,"jpg",new File("F:\\project-file\\img2video\\img\\change2\\"+count+
+                        ".jpg"));
+            }
+            if (picPxes.get(next) != null) {
+                newBufferedImage.setRGB(picPxes.get(next).getX(),picPxes.get(next).getY(),picPxes.get(next).getRgb());
+                picPxes.set(next,null);
+                count ++;
+            }
+
+            if (count >= size) {
+                break;
+            }
+        }
+    }
+
+    private static void createChangedPic(BufferedImage bufferedImage) throws IOException {
+        int width = bufferedImage.getWidth();
+        int height = bufferedImage.getHeight();
+        int minx = bufferedImage.getMinX();
+        int miny = bufferedImage.getMinY();
+        BufferedImage newBufferedImage=new BufferedImage(width,height,BufferedImage.TYPE_INT_RGB);
+        List<PicPx> picPxes = new ArrayList<>();
+        for (int i = minx; i < width; i++) {
+            for (int j = miny; j < height; j++) {
+                int pixel = bufferedImage.getRGB(i, j);
+                PicPx picPx = new PicPx();
+                picPx.setR((pixel & 0xff0000) >> 16);
+                picPx.setG((pixel & 0xff00) >> 8);
+                picPx.setB((pixel & 0xff));
+                picPx.setX(i);
+                picPx.setY(j);
+                picPx.setRgb(pixel);
+                picPxes.add(picPx);
+            }
+        }
+        for (int m=0;m<picPxes.size();m++) {
+            newBufferedImage.setRGB(picPxes.get(m).getX(),picPxes.get(m).getY(),picPxes.get(m).getRgb());
+            if((m % 2000 == 0) || m == 0 ){
+                ImageIO.write(newBufferedImage,"jpg",new File("F:\\project-file\\img2video\\img\\change\\"+m+".jpg"));
+            }
+        }
+
     }
 
     private static void mergeTwoPics(BufferedImage bufferedImage) throws IOException {

@@ -12,8 +12,8 @@ import java.util.Arrays;
 public class Img2Gif {
 
     public static void main(String[] args){
-        String imgPath = "F:\\project-file\\img2video\\img\\";
-        String gifPath = "F:\\project-file\\img2video\\gif\\test2.gif";
+        String imgPath = "F:\\project-file\\img2video\\img\\change2\\";
+        String gifPath = "F:\\project-file\\img2video\\img\\change2\\test.gif";
         Img2Gif.toGif(imgPath,gifPath);
     }
 
