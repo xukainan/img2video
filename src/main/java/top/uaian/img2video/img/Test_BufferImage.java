@@ -47,7 +47,83 @@ public class Test_BufferImage {
         //渲染像素点（从左到右）
 //        createChangedPic(bufferedImage);
         //渲染像素点（随机）
-        createChangedPic2(bufferedImage);
+//        createChangedPic2(bufferedImage);
+        //合成三张图片
+//        mergeThreePic(bufferedImage);
+        //合成三张图片并添加文字
+        mergeThreePicAndText(bufferedImage);
+    }
+
+    private static void mergeThreePicAndText(BufferedImage mainImage) throws IOException{
+        String back_img_path = "F:\\project-file\\img2video\\img\\GaussianBlur.jpg";
+        BufferedImage backImage = ImageIO.read(new FileInputStream(back_img_path));
+        String font_img_path = "F:\\project-file\\img2video\\img\\font.jpg";
+        BufferedImage fontImage = ImageIO.read(new FileInputStream(font_img_path));
+
+        int minx = backImage.getMinX();
+        int miny = backImage.getMinY();
+
+        int main_Position_height = 70;
+        int main_Position_width = minx-364;
+
+        int font_Position_height = 240;
+        int font_Position_width = minx + 800;
+
+        int i = 1;
+
+        while (true) {
+
+            BufferedImage newBufferedImage=new BufferedImage(640,360,BufferedImage.TYPE_INT_RGB);
+            Graphics graphics = newBufferedImage.getGraphics();
+            graphics.drawImage(backImage,0,0,null);
+            graphics.drawImage(mainImage,main_Position_width,main_Position_height,364,200,null);
+            graphics.drawImage(fontImage,font_Position_width,font_Position_height,250,100,null);
+            main_Position_width += 10;
+            font_Position_width -= 10;
+            ImageIO.write(newBufferedImage,"jpg",new File("F:\\project-file\\img2video\\img\\merge\\"+i+
+                    ".jpg"));
+            i ++;
+            graphics.dispose();
+            if (main_Position_width >= 70) {
+                break;
+            }
+        }
+    }
+
+    private static void mergeThreePic(BufferedImage mainImage) throws IOException{
+        String back_img_path = "F:\\project-file\\img2video\\img\\GaussianBlur.jpg";
+        BufferedImage backImage = ImageIO.read(new FileInputStream(back_img_path));
+        String font_img_path = "F:\\project-file\\img2video\\img\\font.jpg";
+        BufferedImage fontImage = ImageIO.read(new FileInputStream(font_img_path));
+
+        int minx = backImage.getMinX();
+        int miny = backImage.getMinY();
+
+        int main_Position_height = 70;
+        int main_Position_width = minx-364;
+
+        int font_Position_height = 240;
+        int font_Position_width = minx + 800;
+
+        int i = 1;
+
+        while (true) {
+
+            BufferedImage newBufferedImage=new BufferedImage(640,360,BufferedImage.TYPE_INT_RGB);
+            Graphics graphics = newBufferedImage.getGraphics();
+            graphics.drawImage(backImage,0,0,null);
+            graphics.drawImage(mainImage,main_Position_width,main_Position_height,364,200,null);
+            graphics.drawImage(fontImage,font_Position_width,font_Position_height,250,100,null);
+            main_Position_width += 10;
+            font_Position_width -= 10;
+            ImageIO.write(newBufferedImage,"jpg",new File("F:\\project-file\\img2video\\img\\merge\\"+i+
+                    ".jpg"));
+            i ++;
+            graphics.dispose();
+            if (main_Position_width >= 70) {
+                break;
+            }
+        }
     }
 
     private static void createChangedPic2(BufferedImage bufferedImage) throws IOException {
