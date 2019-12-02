@@ -10,7 +10,7 @@ import lombok.Data;
  * version: 1.0 <br>
  */
 @Data
-public class PicPx {
+public class ImagePx {
     private int x;
     private int y;
     private int r;

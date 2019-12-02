@@ -26,7 +26,7 @@ public class IOStream {
 
     private static void createFile() throws IOException {
         //创建目录
-        File catalog =  new File("F:\\project-file\\img2video\\img\\ioStream");
+        File catalog =  new File("F:\\project-file\\img2video\\img\\ioStream"); //本地的图片用new File，网络上的图片用new URL
         if (!catalog.exists()) {
             catalog.mkdir();
         }

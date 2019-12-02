@@ -1,14 +1,12 @@
 package top.uaian.img2video.img;
 
-import top.uaian.img2video.img2gif.Img2Gif;
-import top.uaian.img2video.model.PicPx;
+import top.uaian.img2video.model.ImagePx;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +22,7 @@ import java.util.Random;
 public class Test_BufferImage {
 
     private static Font font = new Font("微软雅黑", Font.BOLD, 48);
+
 
     public static void main(String[] args) throws IOException {
         String source_img_path = "F:\\project-file\\img2video\\img\\001.jpg";
@@ -55,39 +54,7 @@ public class Test_BufferImage {
     }
 
     private static void mergeThreePicAndText(BufferedImage mainImage) throws IOException{
-        String back_img_path = "F:\\project-file\\img2video\\img\\GaussianBlur.jpg";
-        BufferedImage backImage = ImageIO.read(new FileInputStream(back_img_path));
-        String font_img_path = "F:\\project-file\\img2video\\img\\font.jpg";
-        BufferedImage fontImage = ImageIO.read(new FileInputStream(font_img_path));
 
-        int minx = backImage.getMinX();
-        int miny = backImage.getMinY();
-
-        int main_Position_height = 70;
-        int main_Position_width = minx-364;
-
-        int font_Position_height = 240;
-        int font_Position_width = minx + 800;
-
-        int i = 1;
-
-        while (true) {
-
-            BufferedImage newBufferedImage=new BufferedImage(640,360,BufferedImage.TYPE_INT_RGB);
-            Graphics graphics = newBufferedImage.getGraphics();
-            graphics.drawImage(backImage,0,0,null);
-            graphics.drawImage(mainImage,main_Position_width,main_Position_height,364,200,null);
-            graphics.drawImage(fontImage,font_Position_width,font_Position_height,250,100,null);
-            main_Position_width += 10;
-            font_Position_width -= 10;
-            ImageIO.write(newBufferedImage,"jpg",new File("F:\\project-file\\img2video\\img\\merge\\"+i+
-                    ".jpg"));
-            i ++;
-            graphics.dispose();
-            if (main_Position_width >= 70) {
-                break;
-            }
-        }
     }
 
     private static void mergeThreePic(BufferedImage mainImage) throws IOException{
@@ -133,18 +100,18 @@ public class Test_BufferImage {
         int miny = bufferedImage.getMinY();
         String source_img_path2 = "F:\\project-file\\img2video\\img\\002.jpg";
         BufferedImage newBufferedImage = ImageIO.read(new FileInputStream(source_img_path2));
-        List<PicPx> picPxes = new ArrayList<>();
+        List<ImagePx> imagePxes = new ArrayList<>();
         for (int i = minx; i < width; i++) {
             for (int j = miny; j < height; j++) {
                 int pixel = bufferedImage.getRGB(i, j);
-                PicPx picPx = new PicPx();
-                picPx.setX(i);
-                picPx.setY(j);
-                picPx.setRgb(pixel);
-                picPxes.add(picPx);
+                ImagePx imagePx = new ImagePx();
+                imagePx.setX(i);
+                imagePx.setY(j);
+                imagePx.setRgb(pixel);
+                imagePxes.add(imagePx);
             }
         }
-        int size = picPxes.size();
+        int size = imagePxes.size();
         Random random = new Random();
         int count = 0;
         while (true) {
@@ -153,9 +120,9 @@ public class Test_BufferImage {
                 ImageIO.write(newBufferedImage,"jpg",new File("F:\\project-file\\img2video\\img\\change2\\"+count+
                         ".jpg"));
             }
-            if (picPxes.get(next) != null) {
-                newBufferedImage.setRGB(picPxes.get(next).getX(),picPxes.get(next).getY(),picPxes.get(next).getRgb());
-                picPxes.set(next,null);
+            if (imagePxes.get(next) != null) {
+                newBufferedImage.setRGB(imagePxes.get(next).getX(), imagePxes.get(next).getY(), imagePxes.get(next).getRgb());
+                imagePxes.set(next,null);
                 count ++;
             }
 
@@ -171,22 +138,22 @@ public class Test_BufferImage {
         int minx = bufferedImage.getMinX();
         int miny = bufferedImage.getMinY();
         BufferedImage newBufferedImage=new BufferedImage(width,height,BufferedImage.TYPE_INT_RGB);
-        List<PicPx> picPxes = new ArrayList<>();
+        List<ImagePx> imagePxes = new ArrayList<>();
         for (int i = minx; i < width; i++) {
             for (int j = miny; j < height; j++) {
                 int pixel = bufferedImage.getRGB(i, j);
-                PicPx picPx = new PicPx();
-                picPx.setR((pixel & 0xff0000) >> 16);
-                picPx.setG((pixel & 0xff00) >> 8);
-                picPx.setB((pixel & 0xff));
-                picPx.setX(i);
-                picPx.setY(j);
-                picPx.setRgb(pixel);
-                picPxes.add(picPx);
+                ImagePx imagePx = new ImagePx();
+                imagePx.setR((pixel & 0xff0000) >> 16);
+                imagePx.setG((pixel & 0xff00) >> 8);
+                imagePx.setB((pixel & 0xff));
+                imagePx.setX(i);
+                imagePx.setY(j);
+                imagePx.setRgb(pixel);
+                imagePxes.add(imagePx);
             }
         }
-        for (int m=0;m<picPxes.size();m++) {
-            newBufferedImage.setRGB(picPxes.get(m).getX(),picPxes.get(m).getY(),picPxes.get(m).getRgb());
+        for (int m = 0; m< imagePxes.size(); m++) {
+            newBufferedImage.setRGB(imagePxes.get(m).getX(), imagePxes.get(m).getY(), imagePxes.get(m).getRgb());
             if((m % 2000 == 0) || m == 0 ){
                 ImageIO.write(newBufferedImage,"jpg",new File("F:\\project-file\\img2video\\img\\change\\"+m+".jpg"));
             }
@@ -212,7 +179,6 @@ public class Test_BufferImage {
         int height = bufferedImage.getHeight();
         BufferedImage newBufferedImage=new BufferedImage(width,height,BufferedImage.TYPE_INT_RGB);
         Graphics graphics=newBufferedImage.getGraphics();
-        //将原始位图缩小后绘制到bufferedImage对象中
         for (int i = 0;i <width; i+=4) {
             graphics.drawImage(bufferedImage_other,0,0,width,height,null);
             graphics.drawImage(bufferedImage,i,0,width,height,null);
