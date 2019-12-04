@@ -6,15 +6,17 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * description:  <br>
  * date: 2019/12/2 10:39 <br>
- *
  * @author: xukainan <br>
  * version: 1.0 <br>
  */
 public class Effect {
+    static int processorCount = Runtime.getRuntime().availableProcessors();
     static BufferedImage img1;
     static BufferedImage img2;
     static int width1;
@@ -22,6 +24,8 @@ public class Effect {
     static int height1;
     static int height2;
     static BufferedImage bufferedImage;
+    static ExecutorService executorService = Executors.newFixedThreadPool(processorCount * 8);
+
 
     static {
         try {
@@ -38,7 +42,7 @@ public class Effect {
     }
 
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, InterruptedException {
         //移动效果
 //        move();
         //放大缩小
@@ -50,13 +54,26 @@ public class Effect {
     }
 
 
-    static void move() throws IOException {
+    static void move() throws IOException, InterruptedException {
         Graphics graphics = bufferedImage.getGraphics();
-        for (int i = 0; i < width1; i += 4) {
-            graphics.drawImage(img1, 0, 0, width1, height1, null);
-            graphics.drawImage(img2, i, 0, width2, height2, null);
-            ImageIO.write(bufferedImage, "jpg", new File("F:\\project-file\\img2video\\img\\effect\\move\\" + i + ".jpg"));
+        AtomicReference<Integer> threadCount = new AtomicReference<>(0);
+        CountDownLatch countDownLatch = new CountDownLatch(width1);
+        long start  = System.currentTimeMillis();
+        for (int i = 0; i < width1; i += 1) {
+            int finalI = i;
+            executorService.execute(()->{
+                graphics.drawImage(img1, 0, 0, width1, height1, null);
+                graphics.drawImage(img2, finalI, 0, width2, height2, null);
+                try {
+                    ImageIO.write(bufferedImage, "jpg", new File("F:\\project-file\\img2video\\img\\effect\\move\\" + finalI + ".jpg"));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                countDownLatch.countDown();
+            });
         }
+        countDownLatch.await();
+        System.out.println(System.currentTimeMillis() - start);
     }
 
 
@@ -78,15 +95,31 @@ public class Effect {
     }
 
     private static void trans() throws IOException {
+        long start  = System.currentTimeMillis();
+        CyclicBarrier barrier = new CyclicBarrier(51, () -> System.out.println(System.currentTimeMillis() - start));
         for (int alphaA = 0; alphaA < 255; alphaA += 5) {
             int alphaB = 255 - alphaA;
             Graphics graphics = bufferedImage.getGraphics();
-            BufferedImage imgA = img_alpha(img1, alphaA);
-            BufferedImage imgB = img_alpha(img2, alphaB);
-            graphics.drawImage(imgA, 0, 0, null);
-            graphics.drawImage(imgB, 0, 0, null);
-            ImageIO.write(bufferedImage, "jpg", new File("F:\\project-file\\img2video\\img\\effect\\trans\\" + alphaA +
-                    ".jpg"));
+            int finalAlphaA = alphaA;
+            new Thread(()->{
+                BufferedImage imgA = img_alpha(img1, finalAlphaA);
+                BufferedImage imgB = img_alpha(img2, alphaB);
+                graphics.drawImage(imgA, 0, 0, null);
+                graphics.drawImage(imgB, 0, 0, null);
+                try {
+                    ImageIO.write(bufferedImage, "jpg", new File("F:\\project-file\\img2video\\img\\effect\\trans\\" + finalAlphaA +
+                            ".jpg"));
+                    barrier.await();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (BrokenBarrierException e) {
+                    e.printStackTrace();
+                }
+            }).start();
+
+
         }
     }
 

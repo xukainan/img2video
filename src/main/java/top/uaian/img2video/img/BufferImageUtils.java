@@ -35,8 +35,6 @@ public class BufferImageUtils {
 //        changePicAlpha(bufferedImage);
         //图片上写字
 //        drawContentToPic(bufferedImage);
-        //生成新图片
-//        createNewPic(bufferedImage);
         //批量生成新图片
 //        createNewPics(bufferedImage);
         //合成两张图片
@@ -192,21 +190,6 @@ public class BufferImageUtils {
         int draw_height = (height - 144) / 2;
         graphics.drawImage(bufferedImage,64,draw_height,364,200,null);
         ImageIO.write(two_bufferedImage,"jpg",new File("F:\\project-file\\img2video\\img\\merge.jpg"));
-
-    }
-
-    private static void createNewPic(BufferedImage bufferedImage) throws IOException {
-        String source_img_path_other = "F:\\project-file\\img2video\\img\\002.jpg";
-        BufferedImage bufferedImage_other = ImageIO.read(new File(source_img_path_other));
-        int width = bufferedImage.getWidth();
-        int height = bufferedImage.getHeight();
-        BufferedImage newBufferedImage=new BufferedImage(width,height,BufferedImage.TYPE_INT_RGB);
-        Graphics graphics=newBufferedImage.getGraphics();
-        //将原始位图缩小后绘制到bufferedImage对象中
-        graphics.drawImage(bufferedImage_other,0,0,width,height,null);
-        graphics.drawImage(bufferedImage,width / 2,0,width,height,null);
-        //将bufferedImage对象输出到磁盘上
-        ImageIO.write(newBufferedImage,"jpg",new File("F:\\project-file\\img2video\\img\\createPic.jpg"));
 
     }
 
