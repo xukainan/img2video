@@ -13,7 +13,7 @@ import java.io.IOException;
  * @author: xukainan <br>
  * version: 1.0 <br>
  */
-public class Test_GaussianBlur {
+public class GaussianBlur {
     public static void main(String[] args) throws IOException {
         BufferedImage img = ImageIO.read(new File("F:\\project-file\\img2video\\img\\001.jpg"));
         int height = img.getHeight();

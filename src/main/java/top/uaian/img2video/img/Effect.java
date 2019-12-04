@@ -45,6 +45,8 @@ public class Effect {
 //        zoom();
         //渐变
         trans();
+        //气泡
+        //曲线
     }
 
 
