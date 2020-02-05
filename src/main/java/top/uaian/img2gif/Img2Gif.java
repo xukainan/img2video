@@ -1,4 +1,4 @@
-package top.uaian.img2video.img2gif;
+package top.uaian.img2gif;
 
 import com.madgag.gif.fmsware.AnimatedGifEncoder;
 

@@ -1,4 +1,4 @@
-package top.uaian.img2video.model;
+package top.uaian.model;
 
 import lombok.Data;
 

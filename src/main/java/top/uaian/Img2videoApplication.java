@@ -1,4 +1,4 @@
-package top.uaian.img2video;
+package top.uaian;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -1,4 +1,4 @@
-package top.uaian.img2video.img2video;
+package top.uaian.img2video;
 
 import org.bytedeco.javacpp.avcodec;
 import org.bytedeco.javacpp.avutil;

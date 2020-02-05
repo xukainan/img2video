@@ -1,4 +1,4 @@
-package top.uaian.img2video.img;
+package top.uaian.img;
 
 import javax.imageio.ImageIO;
 import java.awt.*;

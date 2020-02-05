@@ -1,4 +1,4 @@
-package top.uaian.img2video;
+package top.uaian;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

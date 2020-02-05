@@ -1,6 +1,6 @@
-package top.uaian.img2video.img;
+package top.uaian.img;
 
-import top.uaian.img2video.model.ImagePx;
+import top.uaian.model.ImagePx;
 
 import javax.imageio.ImageIO;
 import java.awt.*;

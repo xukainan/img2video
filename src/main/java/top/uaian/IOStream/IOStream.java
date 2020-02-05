@@ -1,4 +1,4 @@
-package top.uaian.img2video.IOStream;
+package top.uaian.IOStream;
 
 import java.io.*;
 
