@@ -64,6 +64,12 @@
             <artifactId>ffmpeg-platform</artifactId>
             <version>4.0.2-1.4.3</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.jhlabs</groupId>
+            <artifactId>filters</artifactId>
+            <version>2.0.235</version>
+        </dependency>
     </dependencies>
 
     <build>

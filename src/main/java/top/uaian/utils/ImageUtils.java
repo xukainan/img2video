@@ -1,5 +1,7 @@
 package top.uaian.utils;
 
+import com.jhlabs.image.DisplaceFilter;
+import com.jhlabs.image.GaussianFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import top.uaian.model.ImagePx;
@@ -46,10 +48,41 @@ public class ImageUtils {
 //        int step = 4;
 //        move(backImgUrl, imgUrl, step, imgDirectoryPath);
         //渐变效果，像素点实现
-        String backImgUrl =  "F:\\project-file\\img2video\\img\\002.jpg";
-        tranByPx(imgUrl, backImgUrl, imgDirectoryPath);
+//        String backImgUrl =  "F:\\project-file\\img2video\\img\\002.jpg";
+//        tranByPx(imgUrl, backImgUrl, imgDirectoryPath);
         //渐变效果，alpha值实现
+        //高斯模糊
+//        gaussianBlur(imgUrl,imgDirectoryPath);
+        //DisplaceFilter 类似于水印的效果
+        String imgGlassUrl = "F:\\project-file\\img2video\\img\\DisplaceFilterMask.jpg";
+        DisplaceFilter(imgUrl,imgDirectoryPath, imgGlassUrl);
 
+    }
+
+    public static void DisplaceFilter(String imgUrl, String imgDirectoryPath, String imgGlassUrl) throws IOException {
+        BufferedImage bufferedImage = getBufferedImage(imgUrl);
+        BufferedImage imgGlassBufferedImage = getBufferedImage(imgGlassUrl);
+        BufferedImage resultImg = new BufferedImage(bufferedImage.getWidth(), bufferedImage.getHeight(), Image.SCALE_DEFAULT);
+        DisplaceFilter displaceFilter = new DisplaceFilter();
+        displaceFilter.setAmount(1.0f);
+        displaceFilter.setDisplacementMap(imgGlassBufferedImage);
+        displaceFilter.filter(bufferedImage, resultImg);
+        String imgName = imgDirectoryPath + "\\" + UUID.randomUUID().toString() + ".jpg";
+        //将bufferedImage对象输出到磁盘上
+        ImageIO.write(resultImg,"jpg",new File(imgName));
+        logger.info("<ImageUtils.changeSize> 生成图片为：" + imgName);
+    }
+
+    public static void gaussianBlur(String imgUrl, String imgDirectoryPath) throws IOException {
+        BufferedImage bufferedImage = getBufferedImage(imgUrl);
+        BufferedImage resultImg = new BufferedImage(bufferedImage.getWidth(), bufferedImage.getHeight(), Image.SCALE_DEFAULT);
+        GaussianFilter gaussianFilter = new GaussianFilter();
+        gaussianFilter.setRadius(20f);
+        gaussianFilter.filter(bufferedImage, resultImg);
+        String imgName = imgDirectoryPath + "\\" + UUID.randomUUID().toString() + ".jpg";
+        //将bufferedImage对象输出到磁盘上
+        ImageIO.write(resultImg,"jpg",new File(imgName));
+        logger.info("<ImageUtils.changeSize> 生成图片为：" + imgName);
     }
 
     private static BufferedImage getBufferedImage(String imgUrl) throws IOException {
