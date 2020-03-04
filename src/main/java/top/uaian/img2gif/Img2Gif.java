@@ -12,8 +12,8 @@ import java.util.Arrays;
 public class Img2Gif {
 
     public static void main(String[] args){
-        String imgPath = "F:\\project-file\\img2video\\img\\effect\\trans";
-        String gifPath = "F:\\project-file\\img2video\\img\\effect\\trans\\trans.gif";
+        String imgPath = "D:\\temp\\A";
+        String gifPath = "D:\\temp\\A\\trans.gif";
         Img2Gif.toGif(imgPath,gifPath);
     }
 
@@ -21,7 +21,7 @@ public class Img2Gif {
         int fileSum = new File(imgPath).list().length;
         File[] files = new File(imgPath).listFiles();
         Arrays.sort(files,
-                (o1, o2) -> Integer.valueOf(o1.getName().replace(".jpg","")) - Integer.valueOf(o2.getName().replace(".jpg","")));
+                (o1, o2) -> Integer.valueOf(o1.getName().replace(".jpeg","")) - Integer.valueOf(o2.getName().replace(".jpeg","")));
         System.out.println("共有 " + fileSum + " 个文件转换成gif");
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         BufferedImage[] bufferedImage = new BufferedImage[fileSum];
